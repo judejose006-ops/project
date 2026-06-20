@@ -11,14 +11,48 @@
         Search
     </button>
 
-    <div class="movie-box" ng-repeat="m in movies">
-
-        <img ng-src="{{m.Poster}}" width="120">
-
-        <h3>{{m.Title}}</h3>
-
-        <p>Year: {{m.Year}}</p>
-
+    
+    <h3 ng-if="searchResults.length">Search Results</h3>
+    <div class="movie-box" ng-repeat="r in searchResults">
+        <img ng-src="{{r.Poster}}" width="80" ng-if="r.Poster && r.Poster !== 'N/A'">
+        <div class="movie-info">
+            <h4>{{r.Title}}</h4>
+            <p>Year: {{r.Year}}</p>
+            <button ng-click="addToCollection(r)">Add to Collection</button>
+        </div>
     </div>
+
+  
+    <h3>Add Custom Movie</h3>
+    <form ng-submit="addMovie(); $event.preventDefault();">
+        <input type="text" ng-model="newMovie.Title" placeholder="Title" required>
+        <input type="text" ng-model="newMovie.Year" placeholder="Year">
+        <input type="text" ng-model="newMovie.Poster" placeholder="Poster URL">
+        <button type="submit">Add Movie</button>
+    </form>
+
+
+    <h3>Your Movie Collection ({{totalMovies()}})</h3>
+    <div class="movie-box saved" ng-if="movies.length">
+        <div ng-repeat="m in movies">
+            <div ng-if="!m._editing">
+                <img ng-src="{{m.Poster}}" width="80" ng-if="m.Poster">
+                <h4>{{m.Title}}</h4>
+                <p>Year: {{m.Year}}</p>
+                <button ng-click="startEdit(m)">Edit</button>
+                <button ng-click="deleteMovie(m)">Delete</button>
+            </div>
+
+            <div ng-if="m._editing">
+                <input type="text" ng-model="m.Title" placeholder="Title">
+                <input type="text" ng-model="m.Year" placeholder="Year">
+                <input type="text" ng-model="m.Poster" placeholder="Poster URL">
+                <button ng-click="saveEdit(m)">Save</button>
+                <button ng-click="cancelEdit(m)">Cancel</button>
+            </div>
+            <hr>
+        </div>
+    </div>
+    <p ng-if="!movies.length">No movies in your collection yet. Add some from the search results or use the form above.</p>
 
 </div>
