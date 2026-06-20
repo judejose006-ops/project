@@ -5,10 +5,16 @@
         This project demonstrates:
     </p>
 
-    <ul>
-        <li>AngularJS Routing</li>
-        <li>Single Page Application (SPA)</li>
-        <li>AJAX using $http</li>
-        <li>Movie API Integration</li>
-    </ul>
+   
+    <div ng-controller="MovieController">
+        <h3>Your Collection Summary</h3>
+        <p>Total movies saved: <strong>{{ totalMovies() }}</strong></p>
+        <div ng-if="lastAdded()">
+            <h4>Last added movie</h4>
+            <p>Title: <strong>{{ lastAdded().Title }}</strong></p>
+            <p>Year: {{ lastAdded().Year }}</p>
+            <img ng-src="{{ lastAdded().Poster }}" width="120" ng-if="lastAdded().Poster">
+        </div>
+        <p ng-if="!lastAdded()">No movies saved yet.</p>
+    </div>
 </div>
